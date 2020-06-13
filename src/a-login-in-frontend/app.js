@@ -5,7 +5,7 @@ import noteService from "../services/notes";
 import Note from "./components/note";
 import Notification from "./components/notification";
 import Footer from "./components/footer";
-import login from "../services/login";
+import loginService from "../services/login";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -76,7 +76,8 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const user = await login(username, password);
+      const user = await loginService.login({ username, password });
+      loginService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
@@ -87,13 +88,6 @@ const App = () => {
       }, 4000);
     }
   };
-
-  const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input type="text" placeholder={newNote} onChange={handleNoteChange} />
-      <button type="submit">Save</button>
-    </form>
-  );
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -116,6 +110,12 @@ const App = () => {
         />
       </div>
       <button type="submit">Login</button>
+    </form>
+  );
+  const noteForm = () => (
+    <form onSubmit={addNote}>
+      <input type="text" placeholder={newNote} onChange={handleNoteChange} />
+      <button type="submit">Save</button>
     </form>
   );
 
