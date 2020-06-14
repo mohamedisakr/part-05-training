@@ -99,6 +99,13 @@ const App = () => {
     }
   };
 
+  const handleLogout = async (event) => {
+    event.preventDefault();
+    localStorage.removeItem("loggedNoteappUser");
+    noteService.setToken(null);
+    setUser(null);
+  };
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -140,6 +147,7 @@ const App = () => {
         ) : (
           <div>
             <p>Welcome : {user.name}</p>
+            <button onClick={handleLogout}>Logout</button>
             {noteForm()}
           </div>
         )}
