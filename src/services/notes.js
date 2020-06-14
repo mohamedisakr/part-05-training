@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL = "/api/notes"; //http://localhost:3003 //"http://localhost:3001/notes";
+const baseURL = "http://localhost:3001/api/notes"; // //"http://localhost:3001/notes";
 
 let token = null;
 
@@ -7,16 +7,14 @@ const setToken = (newToken) => {
   token = `bearer ${newToken}`;
 };
 
+// const getAll = async () => {
+//   const response = await axios.get(baseURL);
+//   return response.data;
+// };
+
 const getAll = () => {
   const request = axios.get(baseURL);
   return request.then((response) => response.data);
-  //   const nonExisting = {
-  //     id: 10000,
-  //     content: "This note is not saved to server",
-  //     date: "2019-05-30T17:30:31.098Z",
-  //     important: true,
-  //   };
-  //   return request.then((response) => response.data.concat(nonExisting));
 };
 
 const create = async (newObject) => {

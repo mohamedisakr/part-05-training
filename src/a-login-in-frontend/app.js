@@ -9,7 +9,7 @@ import loginService from "../services/login";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState("a new note...");
+  const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [username, setUsername] = useState("");
@@ -21,6 +21,15 @@ const App = () => {
   };
 
   useEffect(hook, []);
+
+  useEffect(() => {
+    const loggedUserJSON = localStorage.getItem("loggedNoteappUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      noteService.setToken(user.token);
+    }
+  }, []);
 
   const addNote = (event) => {
     event.preventDefault();
@@ -77,7 +86,8 @@ const App = () => {
     event.preventDefault();
     try {
       const user = await loginService.login({ username, password });
-      loginService.setToken(user.token);
+      localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
+      noteService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
@@ -85,7 +95,7 @@ const App = () => {
       setErrorMessage("Wrong Credentials");
       setTimeout(() => {
         setErrorMessage(null);
-      }, 4000);
+      }, 5000);
     }
   };
 
@@ -114,7 +124,8 @@ const App = () => {
   );
   const noteForm = () => (
     <form onSubmit={addNote}>
-      <input type="text" placeholder={newNote} onChange={handleNoteChange} />
+      <input value={newNote} onChange={handleNoteChange} />
+      {/* placeholder={newNote} */}
       <button type="submit">Save</button>
     </form>
   );
