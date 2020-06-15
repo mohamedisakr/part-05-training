@@ -14,7 +14,7 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [loginVisible, setLoginVisible] = useState(false);
+  const [loginVisible, setLoginVisible] = useState(true);
 
   const hook = () => {
     noteService.getAll().then((initialNotes) => setNotes(initialNotes));
@@ -141,10 +141,9 @@ const App = () => {
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
+      {loginForm()}
       <div>
-        {user === null ? (
-          loginForm()
-        ) : (
+        {user === null ? null : (
           <div>
             <p>Welcome : {user.name}</p>
             <button onClick={handleLogout}>Logout</button>
@@ -166,7 +165,6 @@ const App = () => {
           />
         ))}
       </ul>
-
       <Footer />
     </div>
   );
