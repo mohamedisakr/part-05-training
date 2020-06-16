@@ -16,7 +16,9 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [loginVisible, setLoginVisible] = useState(true);
+  // const [loginVisible, setLoginVisible] = useState(true);
+
+  const noteFormRef = React.createRef();
 
   const hook = () => {
     noteService.getAll().then((initialNotes) => setNotes(initialNotes));
@@ -34,16 +36,11 @@ const App = () => {
   }, []);
 
   const addNote = (noteOject) => {
+    noteFormRef.current.toggleVisibility();
     noteService.create(noteOject).then((returnedNote) => {
       setNotes(notes.concat(returnedNote));
-      // setNewNote("");
     });
   };
-
-  // const handleNoteChange = (event) => {
-  //   console.log(event.target.value);
-  //   setNewNote(event.target.value);
-  // };
 
   const toggleImportance = (event) => {
     setShowAll(!showAll);
@@ -101,7 +98,7 @@ const App = () => {
   };
 
   const noteForm = () => (
-    <Togglable buttonLabel="New Note">
+    <Togglable buttonLabel="New Note" ref={noteFormRef}>
       <NoteForm createNote={addNote} />
     </Togglable>
   );
